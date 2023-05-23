@@ -1,0 +1,110 @@
+<!-- views/home.ejs -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Tags</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    <style>
+      body {
+        padding-top: 20px;
+        padding-bottom: 20px;
+        background-image: url("/images/photo2.jpg");
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+        background-size: cover;
+      }
+      .jumbotron {
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <%- include('partials/navbar') %>
+      <div class="jumbotron">
+        <h1>All about user blog</h1>
+        <p class="lead">Check out our user Tags below!</p>
+        <% if(typeof tag !== "undefined"){ %>
+          <h1>Updating the Tags for Blogs: </h1> <h2><%= tag.name %></h2>
+        <form action="/Tagupdate/<%= tag._id %>" method="post">
+          <label> name : </label>
+          <input
+            name="name"
+            class="form-control"
+            type="text"
+            placeholder="name"
+            aria-label="name"
+          />
+          <label>Description  : </label>
+          <input
+            name="Description"
+            class="form-control"
+            type="text"
+            placeholder="Description"
+            aria-label="Description"
+          />
+          
+          <br />
+          <label>Blog Selector  : </label>
+          <select multiple name="selectedBlog">
+          <% for(blog of allBlog) {%>
+         <option value="<%= blog._id %>"><%= blog.title %></option>
+        <% } %>
+
+
+          </select>
+          
+          <br />
+          <button class="btn btn-danger"> Update </button>
+        </form> 
+        <% } else { %>
+          <form action="/createTags" method="post">
+            <label> Name : </label>
+          <input
+            name="name"
+            class="form-control"
+            type="text"
+            placeholder="name"
+            aria-label="name"
+          />
+          <label>Description  : </label>
+          <input
+            name="Description"
+            class="form-control"
+            type="text"
+            placeholder="Description"
+            aria-label="Description"
+          />
+            <br />
+      
+          <label>Blogs Selector  : </label>
+          <select multiple name="selectedBlog">        
+<% for(blog of allBlog) {%>
+  <option value="<%= blog._id %>"><%= blog.title %></option>
+<% } %>
+          </select>
+          
+          <br />
+            <button class="btn btn-danger">submit new value</button>
+          </form> 
+          <% }  %>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="list-group">
+            <!-- loop over blog posts and render them -->
+            LIST_OF_POSTS
+          </div>
+        </div>
+      </div>
+      <%- include('partials/footer') %>
+    </div>
+  </body>
+</html>

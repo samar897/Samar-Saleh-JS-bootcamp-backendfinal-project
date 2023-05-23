@@ -1,0 +1,44 @@
+<!-- views/post.ejs -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>POST_TITLE | Node.js Blog</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    <style>
+        body {
+            padding-top: 20px;
+        padding-bottom: 20px;
+        background-image: url("/images/photo2.jpg");
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+        background-size: cover;
+        }
+        .jumbotron {
+        margin-top: 10px;
+      }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <%- include('partials/navbar') %>
+        <div>
+            <div class="jumbotron">
+            <h1>Sorry Something happened</h1>
+            <p class="lead"><%= data %></p>
+            
+            <p class="btn btn-danger" >Please try againe</p>
+            <br>
+
+            <h2>POST_TITLE</h2>
+            <p>by <a href="#">POST_AUTHOR</a></p>
+            <p>POST_CONTENT</p>
+            <hr>
+        </div>
+        <%- include('partials/footer') %>
+    </div>
+</body>
+</html>
