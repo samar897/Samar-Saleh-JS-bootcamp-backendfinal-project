@@ -9,7 +9,7 @@ const InstructorSchema = new Schema({
   },
   InstructorPassword :{
     type: String,
-    selecte: false,
+    selecte: true,
     require: [true, "you should fill the password"],
     },
   InstructorEmail: {
@@ -41,3 +41,6 @@ const InstructorSchema = new Schema({
 const Instructor = mongoose.model("Instructor", InstructorSchema);
 
 module.exports = Instructor;
+
+
+//style="float: right;"

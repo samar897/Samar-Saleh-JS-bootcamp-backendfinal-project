@@ -80,46 +80,89 @@ router.get("/Logout", (req, res) => {
   res.redirect("/in/login");
 });
 
-router.get("/InstructorUpdate/:InstructorID", (req, res) => {
+router.post("/updateInstructor/:InstructorID", (req, res) => {
+ 
+  const InstructorID = req.session.InstructorID;
+  const InstructorName=req.body.InstructorName;
+  let InstructorPassword = req.body.InstructorPassword;
+  const InstructorEmail=req.body.InstructorEmail;
+  const contactInformation=req.body.contactInformation;
+  const teachingExperience=req.body.teachingExperience;
 
-  if (req.session.currentUser) {
-    const InstructorID = req.params.InstructorID;
-    const title = req.body.title;
-    const body = req.body.body;
-    const selectedTags = req.body.selectedTags;
-  
-    User.findById(InstructorID).then((foundInstructor) => {
-      Tag.findById("645e28228d444e8fd9b420be").then((Tag) => {
-        Blogs.findById(userID)
-          .then((blog) => {
-            blog.title = title;
-            blog.body = body;
-            blog.tags = selectedTags;
-            blog.user = foundUser;
-  
-            Tag.save().then((savedblog) => {
-              foundUser.BlogsM.push(savedblog);
-              foundUser.save().then(() => {
-                Tag.blogs = savedblog._id;
-                blog.save().then(() => {
-                  console.log("record Updated in DB");
-                  res.redirect("/in/InstructorList");
-                });
-              });
-            });
-          })
+
+    if (InstructorID) {
+      InstructorDB.findById(InstructorID).then((foundInstructor) => {
+        if(foundInstructor._id!=InstructorID){
+          res.render("errorMessage.ejs", { data: "You are Not Allowed" });
+        } else 
+        {
+          
+          if (InstructorPassword) {
+            bcrypt.hash(InstructorPassword, saltRounds).then((encryptedpassword) => {
+        Courses.findById(InstructorID).then((course) => {
+     // Courses.findById("645e28228d444e8fd9b420be").then((Tag) => {
+         InstructorDB.findById(InstructorID).then((foundInstructor) => {
+          foundInstructor.InstructorName=InstructorName,
+          foundInstructor.InstructorPassword = encryptedpassword,
+          foundInstructor.InstructorEmail = InstructorEmail,
+          foundInstructor.contactInformation = contactInformation,
+          foundInstructor.teachingExperience = teachingExperience,
+   
+            //Tag.save().then((savedblog) => {
+            //  foundInstructor.InstructorCourses.push(course);
+            //  foundInstructor.save().then(() => {
+               // Tag.blogs = savedblog._id;
+               foundInstructor.save().then((data) => {
+                  console.log();
+                  //res.send("record Updated in DB"+ data);
+                res.redirect("/in/InstructorList");
+             // });
+             // });
+           // });
+        })
           .catch((error) => {
             //  res.send("The Record not update");
             console.log("The Record not update");
             console.log(error.message);
             res.render("errorMessage.ejs", { data: error.message });
           });
+        
       });
+      
+    });
+  });
+} else {
+  res.render("errorMessage.ejs", { data: "password feield is required" });
+}
+      }
     });
   } else {
-    res.redirect("/in/login");
+    // res.redirect("/in/login");
+    res.render("errorMessage.ejs", { data: "Please Login First" });
+   }
+  
+   });
+
+  router.get("/InstructorUpdate/:InstructorID2", (req, res) => {
+    const InstructorID2 = req.params.InstructorID2;
+    const InstructorID=req.session.InstructorID;
+
+    console.log(InstructorID2 + " ");
+    console.log(InstructorID + " ");
+
+if (InstructorID) {
+if(InstructorID2==InstructorID){
+
+  res.render("InstructorRegister.ejs",{data:InstructorID});
+ 
+ } else{
+  res.render("errorMessage.ejs", { data: "You are Not Allowed" });
+
+}
+  } else {
+    res.render("errorMessage.ejs", { data: "Please Login First" });
   }
-});
+  });
 
 router.get("/OneInstructorInfo", (req, res) => {
 

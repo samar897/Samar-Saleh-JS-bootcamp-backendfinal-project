@@ -27,11 +27,10 @@
     <div class="container">
       <%- include('partials/navbar') %>
       <div class="jumbotron">
-        <% if(typeof instructor !== "undefined"){ %>
-        <h1>Update User Info</h1>
-        <p class="lead">Please put all your Info </p>
-          <h1>Updating the user: <%= instructor.InstructorName %></h1>
-        <form action="/updateInstructor/<%= instructor._id %>" method="post">
+        <% if(typeof data !== "undefined"){ %>
+          <h2>Updating the user: <%= data.InstructorName %></h2>
+          <p class="lead">Please put all your Info </p>
+        <form action="/in/updateInstructor/<%= data %>" method="post">
           <label> Instructor Name : </label>
           <input
             name="InstructorName"
@@ -52,11 +51,22 @@
           <input
             name="InstructorPassword"
             class="form-control"
-            type="text"
+            type="password"
             placeholder="InstructorPassword"
             aria-label="InstructorPassword"
           />
           <br />
+
+          <label>Contact Information </label>
+          <input
+            name="contactInformation"
+            class="form-control"
+            type="text"
+            placeholder="contactInformation"
+            aria-label="contactInformation"
+          />
+          <br />
+
           <label> teaching Experience  </label>
           <input
             name="teachingExperience"
@@ -66,12 +76,6 @@
             aria-label="teachingExperience"
           /> 
           <br />
-          <br />
-          <label>Courses Selector  : </label>
-          <select multiple name="selectedCourses">
-          <% for(Course of Courses) {%>
-         <option value="<%= Course._id %>"><%= Course.CourseName %></option>
-        <% } %>
           <button class="btn btn-danger"> Update </button>
         </form> 
 
@@ -101,7 +105,7 @@
           <input
             name="InstructorPassword"
             class="form-control"
-            type="text"
+            type="password"
             placeholder="InstructorPassword"
             aria-label="InstructorPassword"
           />
@@ -128,7 +132,6 @@
             <button class="btn btn-danger">Register</button>
             <a href="/in/login" class="btn btn-danger" style="float: right;"> login </a>
           </form> 
-  
           <% }  %>
       </div>
       <div class="row">
