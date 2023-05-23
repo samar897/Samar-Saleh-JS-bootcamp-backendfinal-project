@@ -24,7 +24,11 @@ const CoursesSchema = new Schema
   InstCor: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "InstructorModel",//here we put name of the model we want to connect with it.
-  }
+  },
+  studentcourse: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "StudentModel",//here we put name of the model we want to connect with it.
+  }]
 },
 {
   timestamps: true,

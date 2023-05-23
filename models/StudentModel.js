@@ -18,6 +18,10 @@ const StudentSchema = new Schema(
       required: [true, "you should fill the email"],
       unique: true,
     },
+    userCourse: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Courses",
+    }], 
   },
   {
     timestamps: true,

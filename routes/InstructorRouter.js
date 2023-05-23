@@ -98,7 +98,7 @@ router.post("/updateInstructor/:InstructorID", (req, res) => {
         {
           
           if (InstructorPassword) {
-            bcrypt.hash(InstructorPassword, saltRounds).then((encryptedpassword) => {
+        bcrypt.hash(InstructorPassword, saltRounds).then((encryptedpassword) => {
         Courses.findById(InstructorID).then((course) => {
      // Courses.findById("645e28228d444e8fd9b420be").then((Tag) => {
          InstructorDB.findById(InstructorID).then((foundInstructor) => {

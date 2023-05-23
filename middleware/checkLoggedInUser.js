@@ -1,27 +1,29 @@
 const jwt = require("jsonwebtoken");
 const InstructorModel = require("../models/InstructorModel");
+const Courses = require("../models/Courses");
 
-const checkBlogAuthor = (req, res, next) => {
+const checkAuthor = (req, res, next) => {
 	try {
 		const authHeader = req.headers.authorization;
 		const token = authHeader.split(" ")[1];
 		const object = jwt.verify(token, process.env.JWT_SECRET);
 		res.locals.object = object;
-		const blogId = req.params.blogId;
 
-		Blog.findById(blogId)
-			.then((foundBlog) => {
-				if (foundBlog.user == object.user.id) {
+		const CourseID = req.params.CourseID;
+
+		Courses.findById(CourseID)
+			.then((foundCourse) => {
+				if (foundCourse.user == object.user.id) {
 					next();
 				} else {
 					res.json({ errorMessage: "unauthorized" });
 				}
 			})
-			.catch((err) => {
-				res.json({ errorMessage: "not found" });
+			.catch((error) => {
+				res.json({ errorMessage: error });
 			});
-	} catch (err) {
-		res.json({ errorMessage: err });
+	} catch (error) {
+		res.json({ errorMessage: error });
 	}
 };
 
@@ -40,5 +42,5 @@ const isLoggedIn = (req, res, next) => {
 
 
 
-module.exports = {isLoggedIn:isLoggedIn, checkBlogAuthor:checkBlogAuthor};
+module.exports = {isLoggedIn:isLoggedIn, checkAuthor:checkAuthor};
 

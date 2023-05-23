@@ -1,24 +1,32 @@
 const express = require("express");
 const router = express.Router();
+const bcrypt = require("bcrypt");    
+const dotenv= require("dotenv"); 
+dotenv.config();
+const jwt = require("jsonwebtoken");
+const InstructorDB = require("../models/InstructorModel");
+const Courses = require("../models/Courses");
 
+const saltRounds = 10;
 const StudentDB = require("../models/StudentModel");
 const autoMiddlware = require("../middleware/checkLoggedInUser");
 
-//const isLoggedIn = autoMiddleware.isLoggedIn;
-//const isBlogAuthor = autoMiddlware.isBlogAuthor;
-const verifyToken = autoMiddlware.verifyToken;
+const isLoggedIn = autoMiddlware.isLoggedIn;
+const isAuthor = autoMiddlware.isAuthor;
+
 
 
 router.post("/Studentlogin", (req, res) => {
   const StudentEmail = req.body.StudentEmail;
   const StudentPassword = req.body.StudentPassword;
 
+
   StudentDB.findOne({ StudentEmail })
     .select("+InstructorPassword")
     .then((foundStudent) => {
       if (!foundStudent) {
         const data = "incorrect Instructor Email";
-        res.render("errorMessage.ejs", { data });
+     res.status(401).json({ errorMessage: data });
         return;
       }
 
@@ -30,8 +38,8 @@ router.post("/Studentlogin", (req, res) => {
           if (response) {
             const token = jwt.sign(
               {
-                Instructor: {
-                  StudentEmail: foundStudent.InstructorEmail,
+                  studentlogin: {
+                  StudentEmail: foundStudent.StudentEmail,
                   id: foundStudent._id,
                 },
               },
@@ -45,16 +53,16 @@ router.post("/Studentlogin", (req, res) => {
             res.status(401).json({ errorMessage: "incorrect password" });
           }
         })
-        .catch((err) => {
-          res.send(err);
+        .catch((errorMessage) => {
+          res.status(401).json({ errorMessage });
         });
     })
-    .catch((err) => {
-      res.send(err);
+    .catch((errorMessage) => {
+      res.status(401).json({ errorMessage });
     });
 });
 
-router.post("/InstructorRegister", function (req, res) {
+router.post("/StudentRegister", function (req, res) {
   let StudentPassword = req.body.StudentPassword;
 
   if (StudentPassword) {
@@ -71,7 +79,7 @@ router.post("/InstructorRegister", function (req, res) {
           console.log("record created in DB");
           const token = jwt.sign(
             { 
-              insa: {
+              studentlogin: {
                 StudentEmail: returnedValue.StudentEmail,
                 id: returnedValue._id,
               },
@@ -96,6 +104,62 @@ router.post("/InstructorRegister", function (req, res) {
 });
 
 
+router.get("/AllStudentCourses", (req, res) => {
+  
+  //لا تستخدم الهيدر ولا تكوكن 
+   const opj = res.locals.opj;
+   const user = opj.user.id;
+   //const blogid = req.body.id;
+   
+    Blogs.find({user}).then((blog) => {
+  
+      res.json({ blog });
+  
+      })
+      .catch((error) => {
+        res.status(400).json({ error: error.message });
+      });
+  });
+
+ 
+
+  router.post("/RegisterCourse", isLoggedIn, function (req, res) {
+
+    let userCourse = req.body.userCourse; //id for Course will conncted to Student
+    const object = res.locals.object;
+    const d = object._id;
+    //user: opj.user.id,
+   
+    //const me = "do";
+  
+    console.log(object);
+  
+    //res.json( d );
+
+   // return;
+    Courses.findById(userCourse).then((course) => {
+    StudentDB.findOneAndUpdate({object}).then((returnedValue)=>{
+
+      returnedValue.userCourse = userCourse;
+
+      course.studentcourse.push(returnedValue);
+      course.save().then(() => {
+      returnedValue.save().then((value) => { 
+        
+      value.populate("userCourse").then((studentcourse) => {
+      res.json({ courses : studentcourse });
+    }); 
+
+        }).catch((error) => {
+          console.log("The Record not update");
+          res.status(401).json({ errorMessage: error.message });
+       }); 
+      });
+    });
+    });
+  });
+  
+  
 module.exports = router;
 
 

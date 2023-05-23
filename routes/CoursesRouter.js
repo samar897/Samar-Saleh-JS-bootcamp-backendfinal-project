@@ -164,24 +164,22 @@ router2.get("/DeleteCourses/:CourseID", (req, res) => {
         } else {
 
       InstructorDB.findById(InstructorID).then((foundInstructor) => {
-     // Courses.findById("645e28228d444e8fd9b420be").then((Tag) => {
         Courses.findById(CourseID).then((course) => {
             course.CourseName = CourseName;
             course.CourseDescription = CourseDescription;
             course.CourseStartAt = CourseStartAt;
             course.CourseEndAt = CourseEndAt;
    
-            //Tag.save().then((savedblog) => {
+           
               foundInstructor.InstructorCourses.push(course);
               foundInstructor.save().then(() => {
-               // Tag.blogs = savedblog._id;
+           
                   course.save().then((data) => {
                   console.log();
                   //res.send("record Updated in DB"+ data);
                   res.redirect("/CoursesRouter/CoursesDetails");
               });
-             // });
-           // });
+          
         })
           .catch((error) => {
             //  res.send("The Record not update");
