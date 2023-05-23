@@ -42,15 +42,14 @@
       <%- include('partials/navbar') %>
       <div class="jumbotron">
         <h1>Courses Info</h1>
-        <p class="lead">Welcome <%= //data[i].InstructorName %></p>
+        <p class="lead">Welcome <%= data.InstructorName %></p>
       
         <br>
           <table class="table">
             <caption>The Table will show the Courses Information</caption>
         <thead>
           <tr>
-            <th scope="col">#</th>
-            <th scope="col">Instructor Name</th>
+           
             <th scope="col">Course Name </th>
             <th scope="col">Course Description </th>
             <th scope="col">Course Start At</th>
@@ -59,21 +58,23 @@
           </tr>
         </thead>
         <tbody>
-          <% if(data.length){
-          for(var i = 0; i< data.length; i++) {%>  
+          <% if(data.InstructorCourses.length){
+       //   for(var i = 0; i< data.InstructorCourses.length; i++) {%>  
           <tr>
-            <th scope="row"><%= (i+1) %></th>
-            <td><%= //data[i].Courses %></td>
-            <td><%= data[i].CourseName %> </td>
-            <td><%= data[i].CourseDescription  %></td>
-            <td><%= data[i].CourseStartAt %></td>
-            <td><%= data[i].CourseEndAt %></td>
-             <td>
-              <a href="/CoursesRouter/DeleteCourses/<%=data[i]._id%>" class="btn btn-danger" role="button">Courses Delete </a>
+              <br/>
+           
+            <% for (Courses of data.InstructorCourses) { %>
+
+            <td><%= Courses.CourseName %> </td>
+            <td><%= Courses.CourseDescription  %></td>
+            <td><%= Courses.CourseStartAt %></td>
+            <td><%= Courses.CourseEndAt %></td>
+            <td>
+            <a href="/CoursesRouter/DeleteCourses/<%=Courses._id%>" class="btn btn-danger" role="button">Courses Delete </a>
              </td>
              <td>
-              <a href="/CoursesRouter/getCoursesUpdate/<%=data[i]._id%>" class="btn btn-danger" role="button">Courses Update</a>
-             </td>
+            <a href="/CoursesRouter/getCoursesUpdate/<%=Courses._id%>" class="btn btn-danger" role="button">Courses Update</a>
+             </td> <% //} %>
           </tr>
           <% }
            }else{ %>

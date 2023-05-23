@@ -9,8 +9,10 @@ const bcrypt = require("bcrypt");
 dotenv.config();
 
 router2.get("/CoursesDetails", (req, res) => {
+
   const InstructorID=req.session.InstructorID;
   if (InstructorID) {
+  
     Courses.find().then((courses) => { 
    //res.send(courses);
    res.render("CoursesList.ejs", { data: courses, InstructorID});
@@ -20,9 +22,32 @@ router2.get("/CoursesDetails", (req, res) => {
   });
 
 } else {
-  res.redirect("/in/login");
+  res.render("errorMessage.ejs", { data: "Please Login First" });
+}
+});  
+
+router2.get("/CoursesDetails/:CourseID", (req, res) => {
+
+  const CourseID =req.params.CourseID;
+  const InstructorID=req.session.InstructorID;
+
+  console.log(CourseID+" "+ "CourseID");
+  console.log(InstructorID +" " + "InstructorID");
+
+  if (InstructorID) {
+    InstructorDB.findById(CourseID).populate("InstructorCourses").then((courses) => { 
+   //res.send(courses);
+   res.render("CoursesList2.ejs", { data: courses, InstructorID});
+  })
+  .catch((error) => {
+    res.render("errorMessage.ejs", { data: error.message });
+  });
+
+} else {
+  res.render("errorMessage.ejs", { data: "Please Login First" });
 }
 });
+
 
 router2.get("/AddCourses/:InstructorID2", (req, res) => {
   const InstructorID2 = req.params.InstructorID2;
@@ -32,7 +57,17 @@ router2.get("/AddCourses/:InstructorID2", (req, res) => {
   if (req.session.InstructorID) {
   res.render("AddCourses.ejs",{data:InstructorID2});
 } else {
-  res.redirect("/in/login");
+  res.render("errorMessage.ejs", { data: "Please Login First" });
+}
+});
+
+///<%=data._id%>
+router2.get("/AddCourses", (req, res) => {
+
+  if (req.session.InstructorID) {
+  res.render("AddCourses.ejs");
+} else {
+  res.render("errorMessage.ejs", { data: "Please Login First" });
 }
 });
 
@@ -76,84 +111,116 @@ router2.post("/AddnewCourses", function (req, res) {
         });
     });
 } else {
- // res.redirect("/in/login");
- res.send( { data:  "error.message"});
+
+ res.render("errorMessage.ejs", { data: "Please Login First" });
 }
 });
-
-/*
-router.get("/CoursesDetails/:InstructorID", (req, res) => {
-
-
-
-
-
-
-});*/
 
 router2.get("/DeleteCourses/:CourseID", (req, res) => {
-
+  const InstructorID = req.session.InstructorID;
   const CourseID = req.params.CourseID;
-  const InstructorID=req.session.InstructorID;
-  if (InstructorID) {
-    Courses.findByIdAndDelete(CourseID).then((courses) => { 
-   //res.send(courses);
+
+
+   if (InstructorID) {
+    Courses.findById(CourseID).then((foundInstructor) => {
+    if(foundInstructor.InstCor!=InstructorID){
+      res.render("errorMessage.ejs", { data: "You are Not Allowed" });
+    } else {
+  Courses.findByIdAndDelete(CourseID).then((courses) => { 
    console.log("deleted");
    res.redirect("/CoursesRouter/CoursesDetails");
-  })
-  .catch((error) => {
+  }).catch((error) => {
+    res.render("errorMessage.ejs", { data: error.message });
+    
+  }).catch((error) => {
     res.render("errorMessage.ejs", { data: error.message });
   });
-
-} else {
-  res.redirect("/in/login");
 }
-
+  });
+ 
+} else {
+  res.render("errorMessage.ejs", { data: "Please Login First" });
+}
 });
 
 
-router2.get("/CoursesUpdate/:InstructorID", (req, res) => {
+  router2.post("/CoursesUpdate/:CourseID", (req, res) => {
+  const CourseID = req.params.CourseID;
+  const InstructorID = req.session.InstructorID;
+  const CourseName = req.body.CourseName;
+  const CourseDescription  = req.body.CourseDescription;
+  const CourseStartAt = req.body.CourseStartAt;
+  const CourseEndAt = req.body.CourseEndAt;
 
-  if (req.session.currentUser) {
-    const InstructorID = req.params.InstructorID;
-    const title = req.body.title;
-    const body = req.body.body;
-    const selectedTags = req.body.selectedTags;
-  
-    User.findById(InstructorID).then((foundInstructor) => {
-      Tag.findById("645e28228d444e8fd9b420be").then((Tag) => {
-        Blogs.findById(userID)
-          .then((blog) => {
-            blog.title = title;
-            blog.body = body;
-            blog.tags = selectedTags;
-            blog.user = foundUser;
-  
-            Tag.save().then((savedblog) => {
-              foundUser.BlogsM.push(savedblog);
-              foundUser.save().then(() => {
-                Tag.blogs = savedblog._id;
-                blog.save().then(() => {
-                  console.log("record Updated in DB");
-                  res.redirect("/in/InstructorList");
-                });
+  console.log(CourseID);
+  console.log(InstructorID);
+
+ 
+
+    if (InstructorID) {
+      Courses.findById(CourseID).then((foundInstructor) => {
+        if(foundInstructor.InstCor!=InstructorID){
+          res.render("errorMessage.ejs", { data: "You are Not Allowed" });
+        } else {
+
+      InstructorDB.findById(InstructorID).then((foundInstructor) => {
+     // Courses.findById("645e28228d444e8fd9b420be").then((Tag) => {
+        Courses.findById(CourseID).then((course) => {
+            course.CourseName = CourseName;
+            course.CourseDescription = CourseDescription;
+            course.CourseStartAt = CourseStartAt;
+            course.CourseEndAt = CourseEndAt;
+   
+            //Tag.save().then((savedblog) => {
+              foundInstructor.InstructorCourses.push(course);
+              foundInstructor.save().then(() => {
+               // Tag.blogs = savedblog._id;
+                  course.save().then((data) => {
+                  console.log();
+                  //res.send("record Updated in DB"+ data);
+                  res.redirect("/CoursesRouter/CoursesDetails");
               });
-            });
-          })
+             // });
+           // });
+        })
           .catch((error) => {
             //  res.send("The Record not update");
             console.log("The Record not update");
             console.log(error.message);
             res.render("errorMessage.ejs", { data: error.message });
           });
+        
       });
     });
+      }
+    });
+  } else {
+    // res.redirect("/in/login");
+    res.render("errorMessage.ejs", { data: "Please Login First" });
+   }
+  
+   });
+
+
+  router2.get("/getCoursesUpdate/:CourseID", (req, res) => {
+    const CourseID = req.params.CourseID;
+    const InstructorID = req.session.InstructorID;
+    console.log(CourseID);
+    console.log(InstructorID);
+
+    if (InstructorID) {
+      Courses.findById(CourseID).then((foundInstructor) => {
+        if(foundInstructor.InstCor!=InstructorID){
+          res.render("errorMessage.ejs", { data: "You are Not Allowed" });
+        } else {
+          res.render("AddCourses.ejs",{data:CourseID});
+        }
+  });
+
   } else {
     res.redirect("/in/login");
   }
-});
-
-
+  });
 
 
 module.exports = router2;

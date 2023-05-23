@@ -55,6 +55,7 @@
             <th scope="col">contact Information</th>
             <th scope="col">teaching Experience</th>
             <th scope="col">Courses</th>
+            <th scope="col">Instructor Control</th>
           </tr>
         </thead>
         <tbody>
@@ -64,22 +65,15 @@
             <td><%= data.InstructorEmail %></td>
             <td><%= data.contactInformation %></td>
             <td><%= data.teachingExperience %></td>
-            <td><%= data.Courses %></td>
-            <td><br/> 
-              <% //for (coures of data[i].Courses) { %>
-                <br/>  <b> coures Name </b> <br/> <%= //coures.name %> <br/>
-              <% //} %>
-              <br/>
+            <td><%= //data.Courses %>
+           
+            <a href="/CoursesRouter/AddCourses" class="btn btn-danger" role="button">Add Courses</a>
+          
             </td>
              <td>
-              <a href="/CoursesRouter/AddCourses/<%=data._id%>" class="btn btn-danger" role="button">Courses Details</a>
-             </td>
-             <td>
               <a href="/in/InstructorDelete/<%=data._id%>" class="btn btn-danger" role="button">Instructor Delete </a>
-             </td>
-             <td>
               <a href="/in/InstructorUpdate/<%=data._id%>" class="btn btn-danger" role="button">Instructor Information Update</a>
-             </td>
+              </td>
           </tr>
         </tbody>
         </table>

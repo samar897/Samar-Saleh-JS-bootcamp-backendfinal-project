@@ -27,15 +27,12 @@
         <%- include('partials/navbar') %>
         <div>
             <div class="jumbotron">
-            <h1>Sorry Something happened</h1>
-            <p class="lead"><%= data %></p>
-            
-            <p class="btn btn-danger" >Please try againe</p>
-            <br>
-
-            <h2>POST_TITLE</h2>
-            <p>by <a href="#">POST_AUTHOR</a></p>
-            <p>POST_CONTENT</p>
+            <h3>Sorry Something happened</h3>
+            <b class="lead" ><%= data %></b>
+            <br/><br/>
+            <button onclick="history.back()" class="btn btn-danger" >Go Back and Please try againe</button>
+           
+            <br/>
             <hr>
         </div>
         <%- include('partials/footer') %>

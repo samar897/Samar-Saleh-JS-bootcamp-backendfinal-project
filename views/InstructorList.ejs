@@ -55,6 +55,7 @@
             <th scope="col">contact Information</th>
             <th scope="col">teaching Experience</th>
             <th scope="col">Courses</th>
+            <th scope="col">Instructor Control</th>
           </tr>
         </thead>
         <tbody>
@@ -66,22 +67,13 @@
             <td><%= data[i].InstructorEmail %></td>
             <td><%= data[i].contactInformation %></td>
             <td><%= data[i].teachingExperience %></td>
-            <td><%= data[i].Courses %></td>
-            <td><br/> 
-              <% //for (coures of data[i].Courses) { %>
-                <br/>  <b> coures Name </b> <br/> <%= //coures.name %> <br/>
-              <% //} %>
-              <br/>
-            </td>
              <td>
-              <a href="/CoursesDetails/<%=data[i]._id%>" class="btn btn-danger" role="button">Courses Details</a>
+              <a href="/CoursesRouter/CoursesDetails/<%=data[i]._id%>" class="btn btn-danger" role="button">Courses Details</a>
              </td>
              <td>
-              <a href="/in/InstructorDelete/<%=data[i]._id%>" class="btn btn-danger" role="button">Courses Delete </a>
-             </td>
-             <td>
-              <a href="/in/CoursesUpdate/<%=data[i]._id%>" class="btn btn-danger" role="button">Courses Update</a>
-             </td>
+              <a href="/in/InstructorDelete/<%=data[i]._id%>" class="btn btn-danger" role="button">Instructor Delete </a>
+              <a href="/in/InstructorUpdate/<%=data[i]._id%>" class="btn btn-danger" role="button">Instructor Information Update</a>
+              </td>
           </tr>
           <% }
            }else{ %>

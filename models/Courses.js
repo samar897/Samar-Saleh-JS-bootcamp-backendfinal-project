@@ -8,7 +8,7 @@ const CoursesSchema = new Schema
     type: String,
     required: [true, "You should fill the Course Name"],
   },
-  CourseDescription :{
+  CourseDescription :{ 
     type: String,
     selecte: false,
     require: [true, "You should fill the Course Description"],
@@ -20,7 +20,6 @@ const CoursesSchema = new Schema
   CourseEndAt: {
     type: String,
     required: [true, "You should fill the Course End At"],
-    unique: true,
   },
   InstCor: {
     type: mongoose.Schema.Types.ObjectId,

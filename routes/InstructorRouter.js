@@ -145,14 +145,14 @@ res.redirect("/in/login");
 });
 
   router.get("/InstructorList", (req, res) => {
-
+    const InstructorID=req.session.InstructorID;
      //affect all the read and add on the table, the find funcation promise asy fun  
-  if (req.session.InstructorID) {
+  if (InstructorID) {
     InstructorDB.find()
     .populate("InstructorCourses")
-    .then((Instructor) => { 
+    .then((instructor) => { 
    //res.send(Instructor);
-   res.render("InstructorList.ejs", { data: Instructor});
+   res.render("InstructorList.ejs", { data: instructor, InstructorID});
   })
   .catch((error) => {
     res.render("errorMessage.ejs", { data: error.message });
@@ -171,6 +171,12 @@ else
 
     const InstructorID2 = req.params.InstructorID2;
     const InstructorID=req.session.InstructorID;
+
+    console.log(InstructorID2 +" InstructorID2");
+    console.log(InstructorID +" InstructorID");
+
+    if(InstructorID2==InstructorID){
+   
     if (InstructorID) {
       InstructorDB.findByIdAndDelete(InstructorID2).then((instructor) => { 
      //res.send("Your Account is Deleted");
@@ -180,16 +186,23 @@ else
     .catch((error) => {
       res.render("errorMessage.ejs", { data: error.message });
     });
-  
+
   } else {
     res.redirect("/in/login");
   }
+
+} else{
+  res.render("errorMessage.ejs", { data: "You are Not Allowed" });
+
+}
 
   });
 
 router.get("/getInstructorRegister", (req, res) => {
   res.render("InstructorRegister.ejs");
 });
+
+
 
 
 router.get("/", (req, res) => {

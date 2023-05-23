@@ -27,11 +27,12 @@
     <div class="container">
       <%- include('partials/navbar') %>
       <div class="jumbotron">
-        <% if(typeof Course !== "undefined"){ %>
-        <h1>Update the Courses</h1>
-        <p class="lead">Please put all Courses Info </p>
-          <h1>Updating the user: <%= data.InstructorName %></h1>
-          <form action="/updateCourses/<%= data._id %>" method="post">
+        <% if(typeof data !== "undefined"){ %>
+       <p><%= data._id %></p>
+          <h2>Updating the Courses: </h2>
+          <form action="/CoursesRouter/CoursesUpdate/<%= data %>" method="post">
+            <br/>
+          <p class="lead">Please put all Courses Info </p>
           <label> Course Name : </label>
           <input
             name="CourseName"
@@ -65,6 +66,7 @@
             placeholder="CourseEndAt"
             aria-label="CourseEndAt"
           /> 
+          <br/> <br/>
           <button class="btn btn-danger"> Update </button>
         </form> 
 
@@ -108,7 +110,7 @@
             aria-label="CourseEndAt"
           /> 
             <br/> 
-            <button class="btn btn-danger">Register</button>
+            <button class="btn btn-danger">Submit</button>
             <a href="/login" class="btn btn-danger" style="float: right;"> login </a>
           </form> 
   
