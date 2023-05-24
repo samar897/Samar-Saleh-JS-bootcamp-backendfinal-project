@@ -10,6 +10,7 @@ dotenv.config();
 
 /*Note Every error will be showing for you on another 
 page to understand the error come from what. res.render("errorMessage.ejs", { data: error.message });
+and I use Window history.back() with button to go back 
 */
 
 

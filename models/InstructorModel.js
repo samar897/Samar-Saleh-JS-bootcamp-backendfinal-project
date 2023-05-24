@@ -1,6 +1,6 @@
 //on this file we will have Schema for Instructor we will create 6 row as below
 const mongoose = require("mongoose");
-//let uniqueValidator = require("mongoose-unique-validator");
+let uniqueValidator = require("mongoose-unique-validator");
 const Schema = mongoose.Schema;
 
 const InstructorSchema = new Schema({
@@ -37,7 +37,7 @@ const InstructorSchema = new Schema({
 },
 );
 
-//InstructorSchema.plugin(uniqueValidator);
+InstructorSchema.plugin(uniqueValidator);
 
 const Instructor = mongoose.model("Instructor", InstructorSchema);
 
