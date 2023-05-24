@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
     <meta charset="utf-8" />
-    <title>Instructor List</title>
+    <title>Instructor Course Page</title>
     <link
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
@@ -42,24 +42,23 @@
       <%- include('partials/navbar') %>
       <div class="jumbotron">
         <h1>Courses Info</h1>
-        <p class="lead">Welcome <%= data.InstructorName %></p>
+        <p class="lead"> Welcome <%= data.InstructorName %></p>
       
         <br>
           <table class="table">
-            <caption>The Table will show the Courses Information</caption>
+            <caption>The Table will show the Courses Information for the Instructor</caption>
         <thead>
           <tr>
            
-            <th scope="col">Course Name </th>
-            <th scope="col">Course Description </th>
-            <th scope="col">Course Start At</th>
-            <th scope="col">Course End At: </th>
+            <th scope="col"> Course Name </th>
+            <th scope="col"> Course Description </th>
+            <th scope="col"> Course Start At</th>
+            <th scope="col"> Course End At: </th>
             
           </tr>
         </thead>
         <tbody>
-          <% if(data.InstructorCourses.length){
-       //   for(var i = 0; i< data.InstructorCourses.length; i++) {%>  
+          <% if(data.InstructorCourses.length){%>  
           <tr>
               <br/>
            
@@ -70,11 +69,11 @@
             <td><%= Courses.CourseStartAt %></td>
             <td><%= Courses.CourseEndAt %></td>
             <td>
-            <a href="/CoursesRouter/DeleteCourses/<%=Courses._id%>" class="btn btn-danger" role="button">Courses Delete </a>
+            <a href="/CoursesRouter/DeleteCourses/<%=Courses._id%>" class="btn btn-success" role="button">Delete Courses  </a>
              </td>
              <td>
-            <a href="/CoursesRouter/getCoursesUpdate/<%=Courses._id%>" class="btn btn-danger" role="button">Courses Update</a>
-             </td> <% //} %>
+            <a href="/CoursesRouter/getCoursesUpdate/<%=Courses._id%>" class="btn btn-success" role="button"> Update Courses </a>
+             </td> 
           </tr>
           <% }
            }else{ %>

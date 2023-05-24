@@ -1,3 +1,5 @@
+//This File Responsible to check from User if he logged in or not and if he/she authorized
+
 const jwt = require("jsonwebtoken");
 const InstructorModel = require("../models/InstructorModel");
 const Courses = require("../models/Courses");
@@ -16,7 +18,7 @@ const checkAuthor = (req, res, next) => {
 		StudentDB.findById(studentlogin) 
 			.then((foundstudent) => {	
 
-				console.log( foundstudent._id +"  foundstudent._id");
+				console.log( foundstudent._id + "foundstudent._id");
 				console.log(studentlogin+" studentlogin ");
 
 				if (foundstudent._id == studentlogin ) {

@@ -1,3 +1,5 @@
+//the course model will be have 6 row 
+
 const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
@@ -10,7 +12,6 @@ const CoursesSchema = new Schema
   },
   CourseDescription :{ 
     type: String,
-    selecte: false,
     require: [true, "You should fill the Course Description"],
     },
     CourseStartAt: {
@@ -21,10 +22,18 @@ const CoursesSchema = new Schema
     type: String,
     required: [true, "You should fill the Course End At"],
   },
-  InstCor: {
+  /*
+here we Declear Variable to connect two table. 
+the relation between Instructor and Courses will be One To Many 
+  */
+  InstCor: { 
     type: mongoose.Schema.Types.ObjectId,
     ref: "InstructorModel",//here we put name of the model we want to connect with it.
   },
+   /*
+here we Declear Variable to connect two table. 
+the relation between Student (userCourse) and Courses (studentcourse) will be Many To Many.
+  */
   studentcourse: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "StudentModel",//here we put name of the model we want to connect with it.

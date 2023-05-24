@@ -1,3 +1,4 @@
+//on this file we will have Schema for Instructor we will create 6 row as below
 const mongoose = require("mongoose");
 //let uniqueValidator = require("mongoose-unique-validator");
 const Schema = mongoose.Schema;
@@ -9,13 +10,13 @@ const InstructorSchema = new Schema({
   },
   InstructorPassword :{
     type: String,
-    selecte: true,
+    selecte: false,
     require: [true, "you should fill the password"],
     },
   InstructorEmail: {
     type: String,
     required: [true, "you should fill the email"],
-    //unique: true,
+    unique: true,
   },
   contactInformation: {
     type: String,

@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
     <meta charset="utf-8" />
-    <title>Instructor List</title>
+    <title>Principal Page info</title>
     <link
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
@@ -46,7 +46,7 @@
       
         <br>
           <table class="table">
-            <caption>The Table will show the Instructor Information</caption>
+            <caption>The Table will show you all the Instructors Information for Principal </caption>
         <thead>
           <tr>
             <th scope="col">#</th>
@@ -56,6 +56,7 @@
             <th scope="col">teaching Experience</th>
             <th scope="col">Courses</th>
             <th scope="col">Instructor Control</th>
+            <th scope="col">Courses Details</th>
           </tr>
         </thead>
         <tbody>
@@ -68,12 +69,17 @@
             <td><%= data[i].contactInformation %></td>
             <td><%= data[i].teachingExperience %></td>
              <td>
-              <a href="/CoursesRouter/CoursesDetails/<%=data[i]._id%>" class="btn btn-danger" role="button">Courses Details</a>
+              <a href="/CoursesRouter/OneListCourses/<%=data[i]._id%>" class="btn btn-success" role="button">Courses Details</a><br/><br/>
              </td>
+             <br/>
+             <td><a href="/PrincipalRouter/CoursesDetails" class="btn btn-success">Show Your Courses Details</a><br/><br/></td>
+             <br/>
+             <td><a href="/PrincipalRouter/PrincipalInstructorList" class="btn btn-success">Show All Instructors </a><br/><br/></td>
              <td>
-              <a href="/in/InstructorDelete/<%=data[i]._id%>" class="btn btn-danger" role="button">Instructor Delete </a>
-              <a href="/in/InstructorUpdate/<%=data[i]._id%>" class="btn btn-danger" role="button">Instructor Information Update</a>
+              <a href="/PrincipalRouter/PrincipalDeleteCourses/<%=data[i]._id%>" class="btn btn-success" role="button">Instructor Delete </a> <br/><br/>
+              <a href="/PrincipalRouter/InstructorUpdate/<%=data[i]._id%>" class="btn btn-success" role="button">Instructor Information Update</a><br/><br/>
               </td>
+              
           </tr>
           <% }
            }else{ %>

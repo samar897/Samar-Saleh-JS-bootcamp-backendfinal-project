@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
     <meta charset="utf-8" />
-    <title>Instructor List</title>
+    <title>List Courses</title>
     <link
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
@@ -42,7 +42,7 @@
       <%- include('partials/navbar') %>
       <div class="jumbotron">
         <h1>Courses Info</h1>
-        <p class="lead">Welcome <%= //data[i].InstructorName %></p>
+        <p class="lead">Welcome on our courses</p>
       
         <br>
           <table class="table">
@@ -69,10 +69,10 @@
             <td><%= data[i].CourseStartAt %></td>
             <td><%= data[i].CourseEndAt %></td>
              <td>
-              <a href="/CoursesRouter/DeleteCourses/<%=data[i]._id%>" class="btn btn-danger" role="button">Courses Delete </a>
+              <a href="/CoursesRouter/DeleteCourses/<%=data[i]._id%>" class="btn btn-success" role="button">Courses Delete </a>
              </td>
              <td>
-              <a href="/CoursesRouter/getCoursesUpdate/<%=data[i]._id%>" class="btn btn-danger" role="button">Courses Update</a>
+              <a href="/CoursesRouter/getCoursesUpdate/<%=data[i]._id%>" class="btn btn-success" role="button">Courses Update</a>
              </td>
           </tr>
           <% }

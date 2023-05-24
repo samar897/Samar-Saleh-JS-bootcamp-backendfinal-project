@@ -8,14 +8,16 @@ const dotenv= require("dotenv");
 const bcrypt = require("bcrypt");
 dotenv.config();
 
-router2.get("/CoursesDetails", (req, res) => {
+
+
+router2.get("/OneListCourses", (req, res) => {
 
   const InstructorID=req.session.InstructorID;
   if (InstructorID) {
   
     Courses.find().then((courses) => { 
-   //res.send(courses);
-   res.render("CoursesList.ejs", { data: courses, InstructorID});
+  // res.send(courses);
+   res.render("OneListCourses.ejs", { data: courses, InstructorID});
   })
   .catch((error) => {
     res.render("errorMessage.ejs", { data: error.message });
@@ -26,7 +28,7 @@ router2.get("/CoursesDetails", (req, res) => {
 }
 });  
 
-router2.get("/CoursesDetails/:CourseID", (req, res) => {
+router2.get("/OneListCourses/:CourseID", (req, res) => {
 
   const CourseID =req.params.CourseID;
   const InstructorID=req.session.InstructorID;
@@ -37,7 +39,7 @@ router2.get("/CoursesDetails/:CourseID", (req, res) => {
   if (InstructorID) {
     InstructorDB.findById(CourseID).populate("InstructorCourses").then((courses) => { 
    //res.send(courses);
-   res.render("CoursesList2.ejs", { data: courses, InstructorID});
+   res.render("OneListCourses.ejs", { data: courses, InstructorID});
   })
   .catch((error) => {
     res.render("errorMessage.ejs", { data: error.message });
@@ -98,8 +100,8 @@ router2.post("/AddnewCourses", function (req, res) {
               //course.InstCor = savedvalue._id;
               //course.save().then((savedvalue) => {
               console.log("record created in DB");
-              res.redirect("/CoursesRouter/CoursesDetails");
-              //res.render("CoursesList.ejs", { data: savedvalue});
+              res.redirect("/in/OneInstructorInfo");
+              //res.render("OneListCourses.ejs", { data: savedvalue});
               //});
             //});
           });
@@ -128,7 +130,8 @@ router2.get("/DeleteCourses/:CourseID", (req, res) => {
     } else {
   Courses.findByIdAndDelete(CourseID).then((courses) => { 
    console.log("deleted");
-   res.redirect("/CoursesRouter/CoursesDetails");
+
+   res.redirect("/in/OneInstructorInfo");
   }).catch((error) => {
     res.render("errorMessage.ejs", { data: error.message });
     
@@ -145,6 +148,7 @@ router2.get("/DeleteCourses/:CourseID", (req, res) => {
 
 
   router2.post("/CoursesUpdate/:CourseID", (req, res) => {
+
   const CourseID = req.params.CourseID;
   const InstructorID = req.session.InstructorID;
   const CourseName = req.body.CourseName;
@@ -155,40 +159,31 @@ router2.get("/DeleteCourses/:CourseID", (req, res) => {
   console.log(CourseID);
   console.log(InstructorID);
 
- 
-
     if (InstructorID) {
       Courses.findById(CourseID).then((foundInstructor) => {
         if(foundInstructor.InstCor!=InstructorID){
           res.render("errorMessage.ejs", { data: "You are Not Allowed" });
         } else {
-
-      InstructorDB.findById(InstructorID).then((foundInstructor) => {
         Courses.findById(CourseID).then((course) => {
             course.CourseName = CourseName;
             course.CourseDescription = CourseDescription;
             course.CourseStartAt = CourseStartAt;
             course.CourseEndAt = CourseEndAt;
-   
+            course.InstCor = InstructorID;
            
-              foundInstructor.InstructorCourses.push(course);
-              foundInstructor.save().then(() => {
-           
-                  course.save().then((data) => {
+                  course.save().then(() => {
                   console.log();
-                  //res.send("record Updated in DB"+ data);
-                  res.redirect("/CoursesRouter/CoursesDetails");
-              });
-          
+               
+                  res.redirect("/in/OneInstructorInfo");
         })
           .catch((error) => {
-            //  res.send("The Record not update");
+           
             console.log("The Record not update");
             console.log(error.message);
             res.render("errorMessage.ejs", { data: error.message });
           });
         
-      });
+ 
     });
       }
     });
@@ -211,7 +206,7 @@ router2.get("/DeleteCourses/:CourseID", (req, res) => {
         if(foundInstructor.InstCor!=InstructorID){
           res.render("errorMessage.ejs", { data: "You are Not Allowed" });
         } else {
-          res.render("AddCourses.ejs",{data:CourseID});
+          res.render("AddCourses.ejs",{data: CourseID});
         }
   });
 

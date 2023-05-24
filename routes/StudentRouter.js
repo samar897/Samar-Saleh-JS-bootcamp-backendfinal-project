@@ -119,39 +119,55 @@ router.get("/AllCoursesOfStudent",isLoggedIn, (req, res) => {
       });
   });
 
-  /*
-/*
-  if (foundCourse.studentlogin == object.studentlogin.id ) {
-    next();
-  } else {
-    res.json({ errorMessage: "unauthorized" });
-  }*/
 
-   //let userCourse = req.body.userCourse; //id for Course will conncted to Student*/
-
-
- 
    router.delete("/StudentDeleteCourse", isLoggedIn, checkAuthor,(req, res) => {
   
     let usercourseID = req.body.usercourseID; //id for Course will conncted to Student
     const object = res.locals.object;  
     const studentlogin = object.studentlogin.id;
+
+    
+        
+      StudentDB.findById(studentlogin).populate("userCourse").then((StudentDBresult) => {
+       Courses.findById( usercourseID ).then((Coursesresult) => {  
    
-      StudentDB.findById( studentlogin , { new: true }).populate("userCourse").then((result) => {
-       result.userCourse.pull(usercourseID);
-       result.save().then((savedvalue) => {
-            
-          console.log(" The course id was delete ");
-          const message = " you are allowd to delete " + " The course id was delete" + savedvalue;
-          res.json({ message });  
-        }); 
-        })
-        .catch((error) => {
-          res.status(400).json({ error: error.message });
-        }); 
-  });
+      StudentDBresult.userCourse.pull(usercourseID);
 
+      StudentDBresult.save().then(() => {   
+   
+       Coursesresult.studentcourse.pull(studentlogin);
+       Coursesresult.save().then((savedvalue) => {  
 
+        console.log(" The course id was delete "); 
+        const message = " you are allowd to delete " + " The course id was delete" + savedvalue;
+        res.json({ message });     
+ 
+ }).catch((error) => {
+  res.status(400).json({ error: error.message });  
+    
+});
+
+}).catch((error) => {
+  res.status(400).json({ error: error.message });  
+    
+}); 
+}).catch((error) => {
+  res.status(400).json({ error: error.message });  
+    
+}).catch((error) => {
+  res.status(400).json({ error: error.message });  
+    
+});
+
+}).catch((error) => {
+
+  res.status(400).json({ error: error.message });  
+
+}).catch((error) => {
+  res.status(400).json({ error: error.message });  
+    
+});
+ });
 
   router.post("/RegisterCourse", isLoggedIn, function (req, res) {
 
@@ -162,7 +178,7 @@ router.get("/AllCoursesOfStudent",isLoggedIn, (req, res) => {
     Courses.findById(usercourse).then((course) => {
     StudentDB.findById(studentlogin).then((returnedStudentValue)=>{
    
-     returnedStudentValue.userCourse.push(usercourse);
+      returnedStudentValue.userCourse.push(usercourse);
      
       course.studentcourse.push(returnedStudentValue);
       course.save().then(() => {
@@ -185,6 +201,3 @@ router.get("/AllCoursesOfStudent",isLoggedIn, (req, res) => {
 module.exports = router;
 
 
-/*Courses.findById( usercourseID , { new: true }).populate("studentcourse").then((result) => {
-          result.studentcourse.pull(studentlogin);
-          result.save().then((savedvalue) => {*/
