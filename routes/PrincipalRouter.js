@@ -8,6 +8,11 @@ const dotenv= require("dotenv");
 const bcrypt = require("bcrypt");
 dotenv.config();
 
+/*
+- the principal can list all the courses from both side 
+- The principal can also remove any of the courses from both side 
+*/
+
 router2.get("/CoursesDetails", (req, res) => {
 
   const InstructorID=req.session.InstructorID;
@@ -70,7 +75,6 @@ res.redirect("/in/login");
 }
 
 });
-
 
 router2.post("/PrincipalupdateInstructor/:InstructorID", (req, res) => {
  

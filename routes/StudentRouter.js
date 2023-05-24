@@ -15,6 +15,7 @@ const isLoggedIn = autoMiddlware.isLoggedIn;
 const checkAuthor = autoMiddlware.checkAuthor;
 
 
+//The student should be able to register/login in the system with token for every one hour
 
 router.post("/Studentlogin", (req, res) => {
   const StudentEmail = req.body.StudentEmail;
@@ -103,6 +104,12 @@ router.post("/StudentRegister", function (req, res) {
   }
 });
 
+/* 
+- On both side connected Many to many they delete and update 
+- The student can register in any of the courses. 
+- The student can list all the courses he is registered in.
+- The student can cancel the registration from the course.
+*/
 
 router.get("/AllCoursesOfStudent",isLoggedIn, (req, res) => {
 

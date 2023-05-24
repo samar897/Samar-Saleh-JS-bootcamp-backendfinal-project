@@ -8,6 +8,9 @@ const dotenv= require("dotenv");
 const bcrypt = require("bcrypt");
 dotenv.config();
 
+/*Note Every error will be showing for you on another 
+page to understand the error come from what. res.render("errorMessage.ejs", { data: error.message });
+*/
 
 
 router2.get("/OneListCourses", (req, res) => {
@@ -28,6 +31,7 @@ router2.get("/OneListCourses", (req, res) => {
 }
 });  
 
+//the control will be get and print the ejs file for OneListCourses for one Course 
 router2.get("/OneListCourses/:CourseID", (req, res) => {
 
   const CourseID =req.params.CourseID;
@@ -50,7 +54,7 @@ router2.get("/OneListCourses/:CourseID", (req, res) => {
 }
 });
 
-
+//the control will be get and print the ejs file for AddCourses for Courses with ID to update
 router2.get("/AddCourses/:InstructorID2", (req, res) => {
   const InstructorID2 = req.params.InstructorID2;
   console.log(InstructorID2);
@@ -63,7 +67,7 @@ router2.get("/AddCourses/:InstructorID2", (req, res) => {
 }
 });
 
-///<%=data._id%>
+//the control will be get and print the ejs file for AddCourses for adding Courses with ID to add new
 router2.get("/AddCourses", (req, res) => {
 
   if (req.session.InstructorID) {
@@ -73,6 +77,7 @@ router2.get("/AddCourses", (req, res) => {
 }
 });
 
+//the action will be to add new courses
 router2.post("/AddnewCourses", function (req, res) {
   const InstructorID = req.session.InstructorID;
  
@@ -118,6 +123,8 @@ router2.post("/AddnewCourses", function (req, res) {
 }
 });
 
+
+//to delete courses from db with code 
 router2.get("/DeleteCourses/:CourseID", (req, res) => {
   const InstructorID = req.session.InstructorID;
   const CourseID = req.params.CourseID;
@@ -146,7 +153,7 @@ router2.get("/DeleteCourses/:CourseID", (req, res) => {
 }
 });
 
-
+//the Last two Control will be update the database for courses  
   router2.post("/CoursesUpdate/:CourseID", (req, res) => {
 
   const CourseID = req.params.CourseID;
@@ -217,3 +224,14 @@ router2.get("/DeleteCourses/:CourseID", (req, res) => {
 
 
 module.exports = router2;
+
+
+/*
+
+- the instructor  able to add a new course.
+- the instructor  able to edit the course.
+- the instructor  able to list all the courses he/she created.
+- the instructor  able to delete any of the courses he created.
+-There are no one can dalete or update for other only them self
+
+*/

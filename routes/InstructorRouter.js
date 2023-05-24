@@ -9,6 +9,25 @@ const bcrypt = require("bcrypt");
 dotenv.config();
 
 
+/*
+- the instructor  able to register in the system. 
+- the instructor  able to login.
+- Every user have there own session.
+*/
+
+router.get("/getInstructorRegister", (req, res) => {
+  res.render("InstructorRegister.ejs");
+});
+
+
+router.get("/", (req, res) => {
+  res.render("InstructorLoginForm.ejs");
+});
+
+router.get("/login", (req, res) => {
+  res.render("InstructorLoginForm.ejs");
+});
+
 router.post("/Instructorlogin", (req, res) => {
   const InstructorEmail = req.body.InstructorEmail;
   const InstructorPassword = req.body.InstructorPassword;
@@ -87,6 +106,9 @@ router.get("/Logout", (req, res) => {
   req.session.destroy();
   res.redirect("/in/login");
 });
+
+
+//The Instructor can update his/her or he can delete the account 
 
 router.post("/updateInstructor/:InstructorID", (req, res) => {
  
@@ -195,8 +217,6 @@ res.redirect("/in/login");
 
 });
 
-
-
   router.get("/InstructorDelete/:InstructorID2", (req, res) => {
 
     const InstructorID2 = req.params.InstructorID2;
@@ -223,7 +243,7 @@ res.redirect("/in/login");
       InstructorDB.findByIdAndDelete(InstructorID2).then((instructor) => { 
      //res.send("Your Account is Deleted");
      console.log("deleted");
-     res.redirect("/in/OneInstructorInfo");
+     res.redirect("/in/login");
     })
     .catch((error) => {
       res.render("errorMessage.ejs", { data: error.message });
@@ -241,18 +261,7 @@ res.redirect("/in/login");
   });
 
 
-router.get("/getInstructorRegister", (req, res) => {
-  res.render("InstructorRegister.ejs");
-});
 
-
-router.get("/", (req, res) => {
-  res.render("InstructorLoginForm.ejs");
-});
-
-router.get("/login", (req, res) => {
-  res.render("InstructorLoginForm.ejs");
-});
 
 
 
