@@ -80,6 +80,10 @@ mongoose.connect(process.env.DB_URL).then(() => {
   console.log(error.message);
 });   
  
+
+router.get("/", (req, res) => {
+  res.render("InstructorLoginForm.ejs");
+});
    
 //STEP3 we will use the app from express lib to listen port
 app.listen(8000, function () {

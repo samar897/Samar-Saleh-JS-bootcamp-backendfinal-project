@@ -1,6 +1,6 @@
 //on this file we will have Schema for Student we will create 5 row as below
 const mongoose = require("mongoose");
-
+let uniqueValidator = require("mongoose-unique-validator");
 const Schema = mongoose.Schema;
 
 const StudentSchema = new Schema(
@@ -28,6 +28,8 @@ const StudentSchema = new Schema(
     timestamps: true,
   }
 );
+
+InstructorSchema.plugin(uniqueValidator);
 
 const Student = mongoose.model("Student", StudentSchema);
 

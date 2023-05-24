@@ -23,7 +23,6 @@ router.get("/getInstructorRegister", (req, res) => {
 router.get("/", (req, res) => {
   res.render("InstructorLoginForm.ejs");
 });
-
 router.get("/login", (req, res) => {
   res.render("InstructorLoginForm.ejs");
 });
