@@ -12,7 +12,7 @@ const StudentDB = require("../models/StudentModel");
 const autoMiddlware = require("../middleware/checkLoggedInUser");
 
 const isLoggedIn = autoMiddlware.isLoggedIn;
-const isAuthor = autoMiddlware.isAuthor;
+const checkAuthor = autoMiddlware.checkAuthor;
 
 
 
@@ -74,21 +74,21 @@ router.post("/StudentRegister", function (req, res) {
       });
       studentdb
         .save()
-        .then((returnedValue) => {
+        .then((returnedStudentValue) => {
           //here will be the response for result
           console.log("record created in DB");
           const token = jwt.sign(
             { 
               studentlogin: {
                 StudentEmail: returnedValue.StudentEmail,
-                id: returnedValue._id,
+                id: returnedStudentValue._id,
               },
             },
             process.env.JWT_SECRET,
             { expiresIn: "1h" }
           );
 
-          res.json({ student: returnedValue, token: token });
+          res.json({ student: returnedStudentValue, token: token });
           console.log(token);
         })
         .catch((error) => {
@@ -104,16 +104,14 @@ router.post("/StudentRegister", function (req, res) {
 });
 
 
-router.get("/AllStudentCourses", (req, res) => {
+router.get("/AllCoursesOfStudent",isLoggedIn, (req, res) => {
+
+   const object = res.locals.object;
+   const studentlogin = object.studentlogin.id; 
   
-  //لا تستخدم الهيدر ولا تكوكن 
-   const opj = res.locals.opj;
-   const user = opj.user.id;
-   //const blogid = req.body.id;
-   
-    Blogs.find({user}).then((blog) => {
+    StudentDB.findById(studentlogin).populate("userCourse").then((StudentInfo) => {
   
-      res.json({ blog });
+      res.json({ StudentInfo });
   
       })
       .catch((error) => {
@@ -121,30 +119,54 @@ router.get("/AllStudentCourses", (req, res) => {
       });
   });
 
+  /*
+/*
+  if (foundCourse.studentlogin == object.studentlogin.id ) {
+    next();
+  } else {
+    res.json({ errorMessage: "unauthorized" });
+  }*/
+
+   //let userCourse = req.body.userCourse; //id for Course will conncted to Student*/
+
+
  
+   router.delete("/StudentDeleteCourse", isLoggedIn, checkAuthor,(req, res) => {
+  
+    let usercourseID = req.body.usercourseID; //id for Course will conncted to Student
+    const object = res.locals.object;  
+    const studentlogin = object.studentlogin.id;
+   
+      StudentDB.findById( studentlogin , { new: true }).populate("userCourse").then((result) => {
+       result.userCourse.pull(usercourseID);
+       result.save().then((savedvalue) => {
+            
+          console.log(" The course id was delete ");
+          const message = " you are allowd to delete " + " The course id was delete" + savedvalue;
+          res.json({ message });  
+        }); 
+        })
+        .catch((error) => {
+          res.status(400).json({ error: error.message });
+        }); 
+  });
+
+
 
   router.post("/RegisterCourse", isLoggedIn, function (req, res) {
 
-    let userCourse = req.body.userCourse; //id for Course will conncted to Student
+    let usercourse = req.body.userCourse; //id for Course will conncted to Student
     const object = res.locals.object;
-    const d = object._id;
-    //user: opj.user.id,
+    const studentlogin = object.studentlogin.id; 
+
+    Courses.findById(usercourse).then((course) => {
+    StudentDB.findById(studentlogin).then((returnedStudentValue)=>{
    
-    //const me = "do";
-  
-    console.log(object);
-  
-    //res.json( d );
-
-   // return;
-    Courses.findById(userCourse).then((course) => {
-    StudentDB.findOneAndUpdate({object}).then((returnedValue)=>{
-
-      returnedValue.userCourse = userCourse;
-
-      course.studentcourse.push(returnedValue);
+     returnedStudentValue.userCourse.push(usercourse);
+     
+      course.studentcourse.push(returnedStudentValue);
       course.save().then(() => {
-      returnedValue.save().then((value) => { 
+        returnedStudentValue.save().then((value) => { 
         
       value.populate("userCourse").then((studentcourse) => {
       res.json({ courses : studentcourse });
@@ -163,3 +185,6 @@ router.get("/AllStudentCourses", (req, res) => {
 module.exports = router;
 
 
+/*Courses.findById( usercourseID , { new: true }).populate("studentcourse").then((result) => {
+          result.studentcourse.pull(studentlogin);
+          result.save().then((savedvalue) => {*/

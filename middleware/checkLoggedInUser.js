@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const InstructorModel = require("../models/InstructorModel");
 const Courses = require("../models/Courses");
+const StudentDB = require("../models/StudentModel");
 
 const checkAuthor = (req, res, next) => {
 	try {
@@ -8,22 +9,28 @@ const checkAuthor = (req, res, next) => {
 		const token = authHeader.split(" ")[1];
 		const object = jwt.verify(token, process.env.JWT_SECRET);
 		res.locals.object = object;
+		const studentlogin = object.studentlogin.id; 
 
-		const CourseID = req.params.CourseID;
+		//const usercourseID = req.body.usercourseID;
 
-		Courses.findById(CourseID)
-			.then((foundCourse) => {
-				if (foundCourse.user == object.user.id) {
+		StudentDB.findById(studentlogin) 
+			.then((foundstudent) => {	
+
+				console.log( foundstudent._id +"  foundstudent._id");
+				console.log(studentlogin+" studentlogin ");
+
+				if (foundstudent._id == studentlogin ) {
 					next();
 				} else {
 					res.json({ errorMessage: "unauthorized" });
 				}
+			
 			})
 			.catch((error) => {
-				res.json({ errorMessage: error });
+				res.json({ errorMessage: error.message });
 			});
 	} catch (error) {
-		res.json({ errorMessage: error });
+		res.json({ errorMessage: error.message });
 	}
 };
 

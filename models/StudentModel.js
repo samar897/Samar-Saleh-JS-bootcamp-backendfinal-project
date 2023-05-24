@@ -6,12 +6,12 @@ const StudentSchema = new Schema(
   {
     StudentName: {
       type: String,
-      require: [true, "you should fill the title"],
+      require: [true, "you should fill the StudentName"],
     },
     StudentPassword: {
       type: String,
       selecte: false,
-      require: [true, "you should fill the title"],
+      require: [true, "you should fill the StudentPassword"],
     },
     StudentEmail: {
       type: String,
