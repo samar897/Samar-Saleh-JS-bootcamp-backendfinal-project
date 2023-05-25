@@ -20,7 +20,7 @@ router2.get("/CoursesDetails", (req, res) => {
   
     Courses.find().then((courses) => { 
    //res.send(courses);
-   res.render("CoursesList.ejs", { data: courses, InstructorID});
+   res.render("CoursesList2.ejs", { data: courses, InstructorID});
   })
   .catch((error) => {
     res.render("errorMessage.ejs", { data: error.message });
@@ -108,8 +108,7 @@ router2.post("/PrincipalupdateInstructor/:InstructorID", (req, res) => {
                       console.log();
                       res.redirect("/PrincipalRouter/PrincipalInstructorList");
             
-            })
-              .catch((error) => {
+            }).catch((error) => {
                 //  res.send("The Record not update");
                 console.log("The Record not update");
                 console.log(error.message);
@@ -163,7 +162,7 @@ if(InstructorID2==InstructorID){
   }
   });
 
-  router2.get("/PrincipalDeleteCourses/:CourseID", (req, res) => {
+ router2.get("/PrincipalDeleteCourses/:CourseID", (req, res) => {
     const InstructorID = req.session.InstructorID;
     const CourseID = req.params.CourseID;
     const AdminID="646e58091c39984480839ff3";
@@ -172,23 +171,81 @@ if(InstructorID2==InstructorID){
       if(req.session.InstructorID==AdminID){
      Courses.findByIdAndDelete(CourseID).then((courses) => { 
      console.log("deleted"); 
+     console.log(CourseID);
      res.redirect("/PrincipalRouter/PrincipalInstructorList");
     }).catch((error) => {
       res.render("errorMessage.ejs", { data: error.message });
-      
-    }).catch((error) => {
-      res.render("errorMessage.ejs", { data: error.message });
     });
-  
-    
   } else {
     res.render("errorMessage.ejs", { data: "You are Not Allowed" });
-  
   }
   } else {
     res.render("errorMessage.ejs", { data: "Please Login First" });
   }
   });
+
+router2.get("/PrincipalDeleteCourses/:InstructorID2", (req, res) => {
+  const InstructorID2 = req.params.InstructorID2;
+  const InstructorID=req.session.InstructorID;
+  const AdminID="646e58091c39984480839ff3";
+
+  console.log(InstructorID2 +" InstructorID2");
+  console.log(InstructorID +" InstructorID");
+  if (InstructorID) {
+  if(req.session.InstructorID==AdminID){
+    
+      InstructorDB.findByIdAndDelete(InstructorID2).then((instructor) => { 
+     //res.send("Your Account is Deleted");
+     console.log("deleted");
+     res.redirect("/PrincipalRouter/PrincipalInstructorList");
+    })
+    .catch((error) => {
+      res.render("errorMessage.ejs", { data: error.message });
+    });
+
+  } else {
+  if(InstructorID2==InstructorID){
+ 
+    InstructorDB.findByIdAndDelete(InstructorID2).then((instructor) => { 
+   //res.send("Your Account is Deleted");
+   console.log("deleted");
+   res.redirect("/in/login");
+  })
+  .catch((error) => {
+    res.render("errorMessage.ejs", { data: error.message });
+  });
+
+} else {
+res.render("errorMessage.ejs", { data: "You are Not Allowed" });
+
+}
+} 
+}else {
+  res.redirect("/in/login");
+}
+
+});
+
+router2.get("/getCoursesUpdate/:CourseID", (req, res) => {
+  const CourseID = req.params.CourseID;
+  const InstructorID = req.session.InstructorID;
+  console.log(CourseID);
+  console.log(InstructorID);
+
+  if (InstructorID) {
+    Courses.findById(CourseID).then((foundInstructor) => {
+      if(foundInstructor.InstCor!=InstructorID){
+        res.render("errorMessage.ejs", { data: "You are Not Allowed" });
+      } else {
+        res.render("AddCourses.ejs",{data: CourseID});
+      }
+});
+
+} else {
+  res.redirect("/in/login");
+}
+});
+
 
 module.exports = router2;
  

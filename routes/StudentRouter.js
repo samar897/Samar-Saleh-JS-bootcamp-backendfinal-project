@@ -146,7 +146,7 @@ router.get("/AllCoursesOfStudent",isLoggedIn, (req, res) => {
        Coursesresult.save().then((savedvalue) => {  
 
         console.log(" The course id was delete "); 
-        const message = " you are allowd to delete " + " The course id was delete" + savedvalue;
+        const message = " you are allowd to delete " + " The course id was delete";
         res.json({ message });     
  
  }).catch((error) => {

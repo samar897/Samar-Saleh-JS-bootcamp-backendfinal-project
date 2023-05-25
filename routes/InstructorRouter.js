@@ -260,9 +260,28 @@ res.redirect("/in/login");
   });
 
 
+router.get("/getCoursesUpdate/:CourseID", (req, res) => {
+    const CourseID = req.params.CourseID;
+    const InstructorID = req.session.InstructorID;
+    console.log(CourseID);
+    console.log(InstructorID);
+    const AdminID="646e58091c39984480839ff3";
 
+    if (InstructorID) {
+      if(req.session.InstructorID==AdminID){
+      
+        res.render("AddCourses.ejs",{data: CourseID});
 
+        } else {
 
+          res.render("errorMessage.ejs", { data: "You are Not Allowed" });
+        }
+ 
+
+  } else {
+    res.redirect("/in/login");
+  }
+  });
 
 
 
