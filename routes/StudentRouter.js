@@ -81,7 +81,7 @@ router.post("/StudentRegister", function (req, res) {
           const token = jwt.sign(
             { 
               studentlogin: {
-                StudentEmail: returnedValue.StudentEmail,
+                StudentEmail: returnedStudentValue.StudentEmail,
                 id: returnedStudentValue._id,
               },
             },
