@@ -237,7 +237,7 @@ router2.get("/getCoursesUpdate/:CourseID", (req, res) => {
   if (InstructorID) {   
   if(req.session.InstructorID==AdminID){
     
-      res.render("AddCourses.ejs",{data: CourseID});
+      res.render("AddCourses2.ejs",{data: CourseID});
 
       } else {
         
@@ -250,6 +250,47 @@ router2.get("/getCoursesUpdate/:CourseID", (req, res) => {
   res.redirect("/in/login");
 }
 });
+
+//the Last two Control will be update the database for courses  
+router2.post("/CoursesUpdate/:CourseID", (req, res) => {
+
+  const CourseID = req.params.CourseID;
+  const InstructorID = req.session.InstructorID;
+  const CourseName = req.body.CourseName;
+  const CourseDescription  = req.body.CourseDescription;
+  const CourseStartAt = req.body.CourseStartAt;
+  const CourseEndAt = req.body.CourseEndAt;
+
+  console.log(CourseID);
+  console.log(InstructorID);
+
+    if (InstructorID) {
+     
+        Courses.findById(CourseID).then((course) => {
+            course.CourseName = CourseName;
+            course.CourseDescription = CourseDescription;
+            course.CourseStartAt = CourseStartAt;
+            course.CourseEndAt = CourseEndAt;
+            course.InstCor = InstructorID;
+           
+                  course.save().then(() => {
+                  console.log();
+               
+                  res.redirect("/PrincipalRouter/PrincipalInstructorList");
+        })
+          .catch((error) => {
+           
+            console.log("The Record not update");
+            console.log(error.message);
+            res.render("errorMessage.ejs", { data: error.message });
+          });
+    });
+  } else {
+    // res.redirect("/in/login");
+    res.render("errorMessage.ejs", { data: "Please Login First" });
+   }
+  
+   });
 
 module.exports = router2;
  
