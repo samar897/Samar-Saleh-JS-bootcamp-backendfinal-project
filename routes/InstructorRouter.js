@@ -117,7 +117,7 @@ router.post("/updateInstructor/:InstructorID", (req, res) => {
   const InstructorEmail=req.body.InstructorEmail;
   const contactInformation=req.body.contactInformation;
   const teachingExperience=req.body.teachingExperience;
-  const AdminID="646e58091c39984480839ff3";
+  
   
   if (InstructorID) {
     InstructorDB.findById(InstructorID).then((foundInstructor) => {
@@ -216,7 +216,7 @@ res.redirect("/in/login");
 
 });
 
-  router.get("/InstructorDelete/:InstructorID2", (req, res) => {
+router.get("/InstructorDelete/:InstructorID2", (req, res) => {
 
     const InstructorID2 = req.params.InstructorID2;
     const InstructorID=req.session.InstructorID;
@@ -260,28 +260,29 @@ res.redirect("/in/login");
   });
 
 
-router.get("/getCoursesUpdate/:CourseID", (req, res) => {
+
+
+
+  router.get("/getCoursesUpdate/:CourseID", (req, res) => {
     const CourseID = req.params.CourseID;
     const InstructorID = req.session.InstructorID;
     console.log(CourseID);
     console.log(InstructorID);
-    const AdminID="646e58091c39984480839ff3";
-
+  
     if (InstructorID) {
-      if(req.session.InstructorID==AdminID){
-      
-        res.render("AddCourses.ejs",{data: CourseID});
-
-        } else {
-
+      Courses.findById(CourseID).then((foundInstructor) => {
+        if(foundInstructor.InstCor!=InstructorID){
           res.render("errorMessage.ejs", { data: "You are Not Allowed" });
+        } else {
+          res.render("AddCourses.ejs",{data: CourseID});
         }
- 
-
+  });
+  
   } else {
     res.redirect("/in/login");
   }
   });
+  
 
 
 

@@ -229,23 +229,27 @@ res.render("errorMessage.ejs", { data: "You are Not Allowed" });
 router2.get("/getCoursesUpdate/:CourseID", (req, res) => {
   const CourseID = req.params.CourseID;
   const InstructorID = req.session.InstructorID;
-  console.log(CourseID);
-  console.log(InstructorID);
 
-  if (InstructorID) {
-    Courses.findById(CourseID).then((foundInstructor) => {
-      if(foundInstructor.InstCor!=InstructorID){
-        res.render("errorMessage.ejs", { data: "You are Not Allowed" });
+  console.log(CourseID+"CourseID");
+  console.log(InstructorID+"InstructorID");
+  const AdminID="646e58091c39984480839ff3";
+
+  if (InstructorID) {   
+  if(req.session.InstructorID==AdminID){
+    
+      res.render("AddCourses.ejs",{data: CourseID});
+
       } else {
-        res.render("AddCourses.ejs",{data: CourseID});
+        
+        res.render("errorMessage.ejs", { data: "You are Not Allowed" });
+       
       }
-});
+
 
 } else {
   res.redirect("/in/login");
 }
 });
-
 
 module.exports = router2;
  
