@@ -68,7 +68,7 @@ app.use("/PrincipalRouter",PrincipalRouter);
 // # install locally (recommended) npm install dotenv --save
 //Create file .env on root file key=value.
 //import and require the dotenv
-//porocess.env
+//porocess.env 
 
 mongoose.connect(process.env.DB_URL).then(() => { 
   //If the connection finished print the result on console
@@ -81,7 +81,7 @@ mongoose.connect(process.env.DB_URL).then(() => {
 });   
  
 
-router.get("/", (req, res) => {
+app.get("/", (req, res) => {
   res.render("InstructorLoginForm.ejs");
 });
    

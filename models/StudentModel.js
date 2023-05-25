@@ -29,7 +29,7 @@ const StudentSchema = new Schema(
   }
 );
 
-InstructorSchema.plugin(uniqueValidator);
+StudentSchema.plugin(uniqueValidator);
 
 const Student = mongoose.model("Student", StudentSchema);
 
