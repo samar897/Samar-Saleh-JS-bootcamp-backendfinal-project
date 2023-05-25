@@ -83,7 +83,7 @@ and I use Window history.back() with button to go back
 ## EJS files on View folder and there is partials include two file   <%- include('partials/navbar') %> and  <%- include('partials/footer') %>.
 
 
-#- I deploied My project to the server with link: https://blogs-vq8d.onrender.com/.
+#- I deploied My project to the server with link: [My Link website](https://lmsjs.onrender.com/).
 
 
 
