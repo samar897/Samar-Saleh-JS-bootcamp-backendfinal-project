@@ -103,8 +103,7 @@ router2.post("/PrincipalupdateInstructor/:InstructorID", (req, res) => {
               foundInstructor.InstructorEmail = InstructorEmail,
               foundInstructor.contactInformation = contactInformation,
               foundInstructor.teachingExperience = teachingExperience,
-       
-                
+
                    foundInstructor.save().then((data) => {
                       console.log();
                       res.redirect("/PrincipalRouter/PrincipalInstructorList");
@@ -171,12 +170,9 @@ if(InstructorID2==InstructorID){
   
      if (InstructorID) {
       if(req.session.InstructorID==AdminID){
-    
-      
      Courses.findByIdAndDelete(CourseID).then((courses) => { 
      console.log("deleted"); 
-  
-     res.redirect("/in/OneInstructorInfo");
+     res.redirect("/PrincipalRouter/PrincipalInstructorList");
     }).catch((error) => {
       res.render("errorMessage.ejs", { data: error.message });
       
