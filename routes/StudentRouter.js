@@ -70,7 +70,7 @@ router.post("/StudentRegister", function (req, res) {
     bcrypt.hash(StudentPassword, saltRounds).then((encryptedpassword) => {
       const studentdb = new StudentDB({
         StudentName: req.body.StudentName,
-        StudentPassword: encryptedpassword,
+        StudentPassword: encryptedpassword, 
         StudentEmail: req.body.StudentEmail,
       });
       studentdb
@@ -85,7 +85,7 @@ router.post("/StudentRegister", function (req, res) {
                 id: returnedStudentValue._id,
               },
             },
-            process.env.JWT_SECRET,
+            process.env.JWT_SECRET, 
             { expiresIn: "1h" }
           );
 
@@ -126,8 +126,7 @@ router.get("/AllCoursesOfStudent",isLoggedIn, (req, res) => {
       });
   });
 
-
-   router.delete("/StudentDeleteCourse", isLoggedIn, checkAuthor,(req, res) => {
+router.delete("/StudentDeleteCourse", isLoggedIn, checkAuthor,(req, res) => {
   
     let usercourseID = req.body.usercourseID; //id for Course will conncted to Student
     const object = res.locals.object;  
@@ -175,22 +174,24 @@ router.get("/AllCoursesOfStudent",isLoggedIn, (req, res) => {
     
 });
  });
-
-  router.post("/RegisterCourse", isLoggedIn, function (req, res) {
-
-    let usercourse = req.body.userCourse; //id for Course will conncted to Student
-    const object = res.locals.object;
-    const studentlogin = object.studentlogin.id; 
-
-    Courses.findById(usercourse).then((course) => {
-    StudentDB.findById(studentlogin).then((returnedStudentValue)=>{
    
-      returnedStudentValue.userCourse.push(usercourse);
+
+    router.post("/RegisterCourse", isLoggedIn, function (req, res) {
+
+      let usercourse = req.body.userCourse; //id for Course will conncted to Student
+      const object = res.locals.object;
+      const studentlogin = object.studentlogin.id;   
+  
+      Courses.findById(usercourse).then((course) => { 
+      StudentDB.findById(studentlogin).then((returnedStudentValue)=>{
      
-      course.studentcourse.push(returnedStudentValue);
-      course.save().then(() => {
-        returnedStudentValue.save().then((value) => { 
-        
+       returnedStudentValue.userCourse.push(usercourse);
+       
+       console.log(returnedStudentValue);
+       course.studentcourse.push(returnedStudentValue);
+       course.save().then(() => {
+
+      returnedStudentValue.save().then((value) => { 
       value.populate("userCourse").then((studentcourse) => {
       res.json({ courses : studentcourse });
     }); 
